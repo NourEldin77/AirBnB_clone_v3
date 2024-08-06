@@ -17,12 +17,16 @@ classes = {
     "User": User
 }
 
+
 @app_views.route('/status', methods=['GET'], strict_slashes=False)
 def status():
+    """  TODO: Doc """
     return jsonify({"status": "OK"})
+
 
 @app_views.route('/stats', methods=['GET'], strict_slashes=False)
 def get_stats():
+    """  TODO: Doc """
     res_dict = {}
     for key, value in classes.items():
         num_of_objs = storage.count(value)

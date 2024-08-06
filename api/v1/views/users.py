@@ -12,22 +12,28 @@ from models import storage
 
 users_dicts = storage.all(User)
 
+
 @app_views.route('/users', methods=['GET'], strict_slashes=False)
 def get_users():
-    array_of_objs= []
+    """  TODO: Doc """
+    array_of_objs = []
     for value in users_dicts.values():
         array_of_objs.append(value.to_dict())
     return jsonify(array_of_objs)
 
+
 @app_views.route('/users/<user_id>', methods=['GET'], strict_slashes=False)
 def get_user_ById(user_id):
+    """  TODO: Doc """
     user_obj = storage.get(User, user_id)
     if not user_obj:
         abort(404, description="User not found")
     return jsonify(user_obj.to_dict())
 
+
 @app_views.route('/users/<user_id>', methods=['DELETE'], strict_slashes=False)
 def delete_state(user_id):
+    """  TODO: Doc """
     user_obj = storage.get(User, user_id)
     if not user_obj:
         abort(404, description="State not found")
@@ -38,8 +44,10 @@ def delete_state(user_id):
     except Exception:
         abort(500, description="Error while deleting")
 
+
 @app_views.route('/users', methods=['POST'], strict_slashes=False)
 def create_state():
+    """  TODO: Doc """
     if request.is_json:
         data = request.get_json()
         if 'email' not in data:
@@ -47,14 +55,16 @@ def create_state():
         elif 'password' not in data:
             abort(400, description="Missing password")
         else:
-            user_obj = User(**data) # unpack dict as key:valus
+            user_obj = User(**data)  # unpack dict as key:valus
             user_obj.save()
-            return jsonify(user_obj.to_dict()), 201 
+            return jsonify(user_obj.to_dict()), 201
     else:
         abort(400, description="Not a JSON")
 
+
 @app_views.route('/users/<user_id>', methods=['PUT'], strict_slashes=False)
 def update_user(user_id):
+    """  TODO: Doc """
     user_obj = storage.get(User, user_id)
     if not user_obj:
         abort(404, description="user not found")

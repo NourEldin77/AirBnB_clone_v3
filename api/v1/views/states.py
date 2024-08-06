@@ -12,12 +12,14 @@ from models import storage
 
 states_dicts = storage.all(State)
 
+
 @app_views.route('/states', methods=['GET'], strict_slashes=False)
 def get_states():
-    array_of_objs= []
+    array_of_objs = []
     for value in states_dicts.values():
         array_of_objs.append(value.to_dict())
     return jsonify(array_of_objs)
+
 
 """
 @app_views.route('/states/<state_id>', methods=['GET', 'DELETE', 'PUT'], strict_slashes=False)
@@ -46,15 +48,20 @@ def StateById(state_id):
             else:
                 abort(400, description="Not a JSON")
 """
+
+
 @app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
 def get_state_ById(state_id):
+    """  TODO: Doc """
     state_obj = storage.get(State, state_id)
     if not state_obj:
         abort(404, description="State not found")
     return jsonify(state_obj.to_dict())
 
+
 @app_views.route('/states/<state_id>', methods=['DELETE'], strict_slashes=False)
 def delete_state(state_id):
+    """  TODO: Doc """
     state_obj = storage.get(State, state_id)
     if not state_obj:
         abort(404, description="State not found")
@@ -65,8 +72,10 @@ def delete_state(state_id):
     except Exception:
         abort(500, description="Error while deleting")
 
+
 @app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
 def update_state(state_id):
+    """  TODO: Doc """
     state_obj = storage.get(State, state_id)
     if not state_obj:
         abort(404, description="State not found")
@@ -80,15 +89,17 @@ def update_state(state_id):
     state_obj.save()
     return jsonify(state_obj.to_dict()), 200
 
+
 @app_views.route('/states', methods=['POST'], strict_slashes=False)
 def create_state():
+    """  TODO: Doc """
     if request.is_json:
         data = request.get_json()
         if 'name' not in data:
             abort(400, description="Missing name")
         else:
-            state_obj = State(**data) # unpack dict as key:valus
+            state_obj = State(**data)  # unpack dict as key:valus
             state_obj.save()
-            return jsonify(state_obj.to_dict()), 201 
+            return jsonify(state_obj.to_dict()), 201
     else:
         abort(400, description="Not a JSON")
